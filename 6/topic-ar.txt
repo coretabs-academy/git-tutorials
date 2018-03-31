@@ -1,0 +1,190 @@
+**السلام عليكم أصدقائي,**
+
+* ### فهرس المواضيع السابقة:
+
+  https://macdiscussions.udacity.com/t/git-fullstack-frontend/122936
+
+* ### مالذي قمنا به في آخر مهمة ؟
+
+  جربنا العمل بشكل تعاوني collaborative git, والموضوع مفتوح لأي شخص يريد التجربة والتطبيق :wink: 
+
+  ولكن أعتقد أنك لاحظت الأمر:
+
+  ```
+  git commit -m "Add index.html"
+  ```
+
+  هو نفسه:
+
+  ```
+  git commit --message "Add index.html"
+  ```
+
+* ### ماهو الفرق بين الأوامر السابقة ؟
+
+  لا يوجد فرق في ما تقوم به الأوامر السابقة هي فقط اختلاف في الاستعمال لا أكثر.
+
+  الغرض أنك ربما لا يعجبك شكل الأمر, وتريد توضيحه لذا ستستعمل message, وهي long form.... يجب استعمال علامتي ناقص بدل واحدة:
+
+  ![image|690x243](upload://2UsQlN2YRO3Lx5EvJvpscwgMmcX.png)
+
+  وربما تريد أن تختصر الكتابة, تكتب فقط m وهي صيغة مختصرة short form.
+
+  * #### ماذا نسمي `-m` أو `--message` ؟
+
+    تسمى parameter.
+
+    هل تذكر صديقك الذي أخبرك أنها argument وأنه لا يوجد اختلاف... لا تصدقه, هناك فرق :smile: 
+  
+  * #### ماذا نسمي الذي يتبع الـ parameter (في حالتنا `"Add index.html"`) ؟
+
+    يسمى argument.
+
+    ![image|690x265](upload://5vqwbOCQKeRhO8ZJNZhAJfY15ut.png)
+
+  * #### من أين نعرف الصيغ المختلفة short / long form ؟
+
+    من أين تعتقد ؟ من الـ documentation بالتأكيد
+
+    https://git-scm.com/docs/git-commit
+
+    اقتباس:
+
+> -m <msg>
+--message=<msg>
+Use the given <msg> as the commit message. If multiple -m options are given, their values are concatenated as separate paragraphs.
+
+* ### مالذي سنقوم به ؟
+
+  سنرجع إلى المستودع الذي قمنا برفعه git-workshop.
+
+  سنقوم بكتابة ملف password.txt  يحتوي على كلمة سر, ثم نقوم بعمل push, ولكن لا نريد من git أن يرى كلمة السر, ولا يقوم بعمل commit لها.
+
+  ![image|640x306](upload://yiYjFbDQaBcpBHPwSECx50LuZWW.png)
+
+  * #### ماهي المشكلة ؟
+
+    المشكلة أن حينما نقوم بعمل `git add .` سيقوم بإضافة password مع بقية الملفات ويتم عمل commit له... لاحظ عند كتابة الأمر `git status`
+
+    وأيضاً كيف سيكون شكل GitKraken في نفس اللحظة (بدون كتابة الأمر كونه يقوم بالأمر تلقائياً).
+
+    ![image|690x190](upload://uxB4WFGltcfLXKpbP58lKbYpssg.png)
+
+  * #### كيف سنقوم بتجاهل الملف password.txt ؟
+
+    الحل بسيط, سنستعمل خاصية ignoring file.
+
+* ### ما هي ignoring files ؟
+
+  هي طريقة سهلة لكتابة ملف اسمه `.gitignore` بحيث يحتوي على اسماء الملفات التي نريد تجاهلها.
+
+  يعني ببساطة بنعمل ملف اسمه `.gitignore` ونكتب أول سطر عليه password.txt, وخلاص git لن يراقب هذا الملف.
+
+  * #### كيف نقوم بكتابة هذا الملف ؟
+
+    بالنسبة لي أستعمل notepad++ للقيام بذلك, بإمكانك استعمال الـ notepad العادية... هذه صورة متحركة تشرح الأمر:
+
+    ![git-ignore-create|690x439](upload://evfGNLVxtOe99SlwBoQ73CkyXhh.gif)
+
+  * #### ماهي النتيجة بعد إضافة password.txt داخل ملف `.gitignore` ؟
+
+    هذه هي النتيجة من تشغيل الأمر git status لرؤية هل ما زال يراقبه أم تم تجاهله:
+
+    ![image|690x189](upload://yylNOfKOBsK08tbzIVZJgslvNMc.png)
+
+   هذه المرة سيتعرف على ملف `.gitignore` بدلاً من ملف password.txt الذي تم تجاهله.
+
+   بإمكانك هنا القيام بعمل stage => commit => push, بحيث تكون الرسالة شيء مثل:
+
+   > Add .gitignore
+
+* #### لدي العديد من الملفات password1.txt و password2.txt وربما مستقبلاً سأضيف ملفات أخرى بنفس النمط, كيف أقوم بتجاهلها ؟
+
+  الأمر بسيط, سنستعمل ما يسمى بـ wildcard بحيث نضع علامة استفهام بدل الرقم...
+
+  فقط ستكتب داخل ملف التجاهل `.gitignore` السطر:
+
+      password?.txt
+
+  معناه أي شيء بدل علامة الاستفهام يقوم بتجاهله.
+
+  * #### ماذا لو كان اسم الملف password22.txt ؟
+
+    لن يكفي استعمال علامة الاستفهام, لأنها تأخذ بدلها حرف واحد فقط... **واحد فقط** !
+
+    إذا مالحل ؟
+
+    الأمر سهل, نستعمل نجمة * بدلاً من علامة استفهام بهذا الشكل:
+
+        password*.txt
+
+
+  * #### لو نريد تجاهل أي ملف يبدأ بكلمة password وصيغة ليست فقط txt... أي صيغة ممكنه مثل password.secret أو password.css أو password.html, كيف سنقوم بذلك ؟
+
+    بهذا الشكل:
+
+    ![image|587x194](upload://mtl8Wo7qN5HLdslAU0PFL7qGq1U.png)
+
+    فقط نكتب السطر:
+
+        password.*
+
+    معناه أي ملف اسمه password, كيفما كانت صيغته... قم بتجاهله !
+
+  * #### نفترض أن لدي الملفات `1.secret` و `2.secret` و `33.secret` كيف سنقوم بتجاهلها وأي شكل يشبهها ؟
+
+    سأجعل هذا الجزء عليك, بإمكانك أن تشاركنا الإجابة في التعليقات :wink:
+ 
+* ### من أين عرفت هذه التفاصيل ؟
+
+  مجدداً صديقنا الـ documentation يوضح كل شيء:
+
+  https://git-scm.com/docs/gitignore
+
+* ### تحقق من فهمك
+
+  * #### بإمكاننا كتابة العديد من الأسطر داخل ملف `.gitignore`
+
+[poll name=test1 type=regular]
+* صحيح
+* خاطئ
+[/poll]
+
+  * #### نستعمل النجمة * لإستبدال حرف واحد فقط
+[poll name=test2 type=regular]
+* صحيح
+* خاطئ
+[/poll]
+
+
+  * #### نستعمل علامة الاستفهام لإستبدال حرف واحد فقط
+[poll name=test3 type=regular]
+* صحيح
+* خاطئ
+[/poll]
+
+* ### ماهي المهمة المطلوبة ؟
+
+  * قم بعمل ملف جديد اسمه password.txt.
+  * اجعل git يتجاهل هذا الملف.
+  * قم بتغيير لون خلفية الفيسبوك بتغيير هذا السطر داخل ملف style.css:
+
+    ![image|550x294](upload://y2amNvLZdSU86WssxJkHQq9HvaV.png)
+
+    إلى:
+
+        background: linear-gradient(#ccc, #3b5998);
+
+  * لا تنسى رفع التعديلات باستعمال stage  => commit => push.
+
+  * خذ screenshot من المجلد الذي تعمل بحيث تبين وجود الملف password.txt وأنه لم يتم رفعه أثناء عمل commit.
+
+* ### أين توضع الحلول :
+
+  بإمكانك أن تنشر الحل في الموضوع المخصص له:
+
+  https://macdiscussions.udacity.com/t/git-ignoring-files/138403
+
+  **في حال لديك أي استفسارات** , تفضل بالسؤال في هذا الموضوع.
+
+  أتمنى لكم الفائدة والتوفيق :blush:

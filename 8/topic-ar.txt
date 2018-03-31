@@ -1,0 +1,300 @@
+**السلام عليكم أصدقائي,**
+
+* ### فهرس المواضيع السابقة:
+
+  https://macdiscussions.udacity.com/t/git-fullstack-frontend/122936
+
+* ### مالذي قمنا به في المهمة السابقة ؟
+
+  قمنا بعمل `git reset --hard HEAD^` للعودة إلى الماضي (الـ commit السابقة).
+  ولكن يجب الإنتباه من هذا الأمر فهو يعتبر destrcutive.
+
+* ### مالذي يجب الحذر منه عند القيام بعمليات تغيير الماضي destructive operations ؟
+
+  يجب عليك تذكر **القاعدة الذهبية** عند التغيير على الماضي... **لا تلمس أي تاريخ مشترك** !
+  > NEVER ever touch a SHARED history !
+
+  * #### مالذي أقصده بتاريخ مشترك ؟
+    هل تتذكر لعبة سؤال وجواب التي قام بها الأستاذ محمد @Alhakem في هذا الدرس:
+
+     https://macdiscussions.udacity.com/t/git-pull-conflicts/135797
+
+     هذه الـ commits تعتبر تاريخ مشترك, لأن الجميع قام بعمل pull لها... أي أنك إذا قمت بتعديلها سنحصل على تاريخ مختلف عن البقية !
+
+     تخيل أنك قمت بعمل الأمر `git reset --hard HEAD~10` في المستودع... سنحصل على هذه النتيجة
+
+     ![image|690x446](upload://pkgC7SzUNS9p9yQ5bnMnTb7e2OW.jpg)
+
+     أي أنني قمت بحذف جزء من التاريخ وهو موجود عند محمد (وعند الآخرين), وهذا سيفسد الأمور كثيراً !
+
+     لهذا نعتبر هذه الأمر destructive operation.
+
+* ### هل يوجد طريقة أخرى بدلاً من التعديل على التاريخ لإصلاح الأمور ؟
+
+  تخيل أنك تريد إصلاح اللون السيء ولكن بدون حذف الـ commit لأنها مشتركة مع بقية أعضاء الفريق الذي تعمل معه...
+
+  الأمر سهل جداً, سنستعمل الامر revert والذي يقوم بعمل commit جديدة عكس التي نقوم بتحديدها, بهذا الشكل:
+
+      git revert HEAD^
+
+  لاحظ أنه تم عكس التعديلات... افتح ملف style.css وسترى ذلك.
+
+  بقي أن تقوم بعمل `git commit` لتحفظ التعديلات الجديدة.
+
+  صورة متحركة لكيفية القيام بالأمر:
+
+  ![git-revert|675x500](upload://mn9rRop9hdHtXHqIZa3MdtyUpUc.gif)
+
+* ### مالذي سنتعلمه هذه المرة ؟
+
+  سنتعلم جراحة git
+
+  ![doctor-161345_960_720|80x90](upload://nxr9OnHpEzYfm9IXXhW2H3BblOE.png)
+
+  سنقوم بتعديل التاريخ, أقصد الـ commits السابقة بالشكل الذي نريده... نعم إنه ممكن, ولكن destructive (**تذكر القاعدة الذهبية** بعدم لمس تاريخ مشترك shared history).
+
+* ### بداية لنقم بمراجعة بعض الأساسيات بشكل سريع:
+
+  قم بإنشاء مجلد, بإمكانك تسميته test.
+
+  قم بتشغيل الأمر `git init` لإنشاء مستودع.
+
+  أضف الملف README.md, اجعله فارغ (للقيام بأول commit).
+
+  قم بعمل `git commit` بدون `-m` لأننا نريده بدون parameters لنتعرف على المحرر.
+
+  ستشاهد أننا نستعمل vim editor الذي يأتي بشكل افتراضي مع git, ويطلب منك كتابة الرسالة لأننا لم نستعمل `-m`.
+
+  صورة متحركة للعملية:
+
+  ![git-vim|675x500](upload://6Ze2Y43x4RHMPWaTxFsh3QPC2nW.gif)
+
+  * #### ولكن محرر vim ممل, كيف أستعمل محرر آخر (أنا أفضل notepad++) ؟
+
+    ببساطة أكتب الأمر:
+
+        git config --global core.editor "'C:/Program Files/Notepad++/notepad++.exe' -multiInst -notabbar -nosession -noPlugin"
+
+    صورة متحركة:
+
+    ![git-integration|675x500](upload://owEszSIYjVbTX2dB6TeAGdXzZbd.gif)
+
+  
+  * #### لا أريد notepad++, أريد شيء آخر:
+
+     شاهد هذه الصفحة:
+
+     https://help.github.com/articles/associating-text-editors-with-git/
+
+* ### لنبدأ العمل على تعديل التاريخ !
+
+  * #### ولكن على ماذا سنقوم بالتعديل ؟
+
+     ستقوم بعمل `git clone` لهذا المستودع, ثم التعديل عليه:
+
+     https://github.com/0xRumple/git-surgery
+
+  * #### ماهي الـ commits التي على المستودع ؟
+
+    الـ commit التي رسالتهال **Add basic style.css** محتواها فقط:
+
+    ![git-first-commit|523x398](upload://mScJNfEW2VwsWkdog8Z94nCyAJe.png)
+
+    بالنسبة للبقية بإمكانك فتح الـ commits من github (حينما تضغط على أي commit, سيظهر لك محتواها):
+
+    https://github.com/0xRumple/git-surgery/commits/master
+
+* #### أريد إضافة commit جديدة:
+
+  نفترض أنه تريد التعديل على لون الهيدر إلى الأخضر, بهذا الشكل
+
+  ![image|690x55](upload://mXzIkm3a9jl24fRRVUhNol64k6n.png)
+
+  أعرف أنه قبيح ولكننا نجرب git هنا :sweat_smile:
+
+  السطر الذي سنعدله هو:
+
+      background: linear-gradient(#59cca0, #59cc00);
+
+  ولكن هل تلاحظ المشكلة ؟
+
+  المشكلة أننا لا نريد أن تصبح النتيجة:
+
+  ![image|415x483](upload://6YMnDqcSmy5X10V5QxfdYsdAHFa.png)
+
+  أي أنها نفس الشيء... ولا نريد commit جديدة فقط لتعديل سطر واحد في الـ commit السابقة :thinking:
+
+  * #### مالحل ؟ أريد إضافة تعديل على الـ commit السابقة مباشرة, هل ممكن هذا ؟
+
+     نعم بالتأكيد ممكن, فقط قم بعمل التعديل الذي تريده (تعديل السطر السابق), ثم اكتب:
+
+     git commit --amend -m "Add header style with green color"
+
+     بإمكانك استعمال نفس الرسالة السابقة **Add header style** ولكن فقط للتوضيح !
+
+     صورة للعملية (لاحظ أنه تم إضافة الـ commit على الـ commit الأخيرة بدون عمل واحدة جديدة):
+
+     ![git-ammend|657x500](upload://8krkq6qMmBB80yuxiehNadzZd7Q.png)
+
+  * #### تذكر القاعدة الذهبية !
+
+     نعم, لا تنسى أنك تقوم بتعديل التاريخ بهذا الشكل (أضفت على التاريخ شيء جديد, وهو لون النص), ويجب أن لا تقوم بهذا الشيء على تاريخ مشترك.
+
+    وإنما **بإمكانك عمل commit جديدة في حال كنت تعمل أنت وفريق** على git.
+
+* ### توجد مشكلة أخرى, ماهي يا ترى ؟
+
+  هل تلاحظ آخر مجموعة من الـ commits:
+
+```
+1ee649e Add header style
+8d78787 Add body style
+6d4c462 Add footer style
+68217f0 Add basic style.css
+```
+
+جميعها تهدف إلى شيء واحد, وهو **Add style.css**, يعني ممكن ندمجها ونجعل الخط الزمني timeline أكثر وضوحاً !
+
+ويصبح الناتج بهذا الشكل:
+
+![git-rebase-log-result|690x72](upload://3tNc5GZXW1eHAe1jLtg26RgjLzK.png)
+
+* #### ولكن كيف ندمجها جميعاً في commit واحدة ؟
+
+  الإجابة هي squashing commits.
+
+* #### كيف تقوم بعمل squash للـ commits ؟
+
+  فقط تكتب الأمر:
+
+      git rebase -i commit
+
+  بحيث بدلاً من commit تكتب الـ SHA أو تستعمل HEAD.
+
+  * #### ولكن أي SHA أختار ؟
+
+    تقوم باختيار الـ SHA الذي قبل الـ commit الذي تريد دمجها, مثلاً في حالتنا لدينا هذه الـ commits:
+
+```
+1ee649e Add header style
+8d78787 Add body style
+6d4c462 Add footer style
+68217f0 Add basic style.css
+1175fc6 Add index.html
+```
+
+ونريد دمج من عند **Add basic style.css** إلى **Add header style**... 
+
+يعني سنختار التي قبلها وهي **1175fc6 Add index.html**.
+
+سنكتب الامر:
+
+     git rebase -i 1175fc6
+
+الـ switch المستعمل `-i` معناه interactive يعني أننا سنقوم بعمل rebase تفاعلي :smile: 
+
+  * #### مالذي سيظهر بعد كتابة هذا الأمر ؟
+
+     سيظهر لنا التالي:
+
+     ![git-rebase-notepad|630x379](upload://srJ1J47DPLGMWmlxX2MnlaS3q8Y.png)
+
+     هنا يحق لك **التعديل على كلمة pick** أو تغيير ترتيب الـ commits فقط.
+
+     يعني لو تعدل على أي شيء آخر (مثل commit messages), لن يراه git... سنقوم بذلك في الخطوات التالية !
+
+     يعني أن الجزء هذا هو ما سنقوم بتعديله هو فقط:
+
+     ![image|630x379](upload://1gm5SBME25udWq1aVyFz0rwWWbm.png)
+
+  * #### ماذا سنغير بدل pick ؟
+
+     أعتقد أنك تعرف مسبقاً... سنكتب squash :smile:
+
+     بهذا الشكل:
+
+      ![image|569x199](upload://e4MBqpeEiD6DXkj9yjPwPNMr2jv.png)
+
+  * #### كيف تعمل squash ؟
+
+     تقوم squash بالدمج مع الـ commit التي قبلها, يعني في المثال بالأعلى سندمج الثلاث الـ commits بالأسفل مع التي بالأعلى.
+
+     لهذا لم نكتب squash على الـ commit الأولى (لأنه لا يوجد واحدة قبلها).
+
+
+  * #### كيف نقوم بتسمية الـ commit المدمجة ؟
+
+    بعد إغلاق notepad++ سيطلب منك اسم الـ commit المدمجة, قم بكتابة اسم مناسب.
+
+  * #### كيف نقوم بالعملية ؟
+
+    هنا صورة متحركة:
+
+    ![git-squash|675x500](upload://to01Iqg42GYCxuTGhC8XPJsZeyO.gif)
+
+* ### تحقق من فهمك
+
+  * #### لا مشكلة في تعديل التاريخ لـ commits يتشاركها اثنان اشخاص فقط
+[poll name=test1 type=regular]
+* صحيح
+* خاطئ
+[/poll]
+
+  * #### نستعمل amend للتعديل على الـ commits التي في وسط الـ timeline.
+[poll name=test2 type=regular]
+* صحيح
+* خاطئ
+[/poll]
+
+  * #### نستعمل squash لدمج الـ commits التي في وسط الـ timeline.
+[poll name=test3 type=regular]
+* صحيح
+* خاطئ
+[/poll]
+
+* #### ماهي المهمة المطلوبة ؟
+
+  * قم بعمل clone للـ repository على الرابط:
+
+     https://github.com/0xRumple/git-surgery
+
+  * قم بعمل التعديلات المطلوبة, لتحصل على النتيجة هذه في `git log`
+
+    ![git-rebase-log-result|690x72](upload://3tNc5GZXW1eHAe1jLtg26RgjLzK.png)
+
+  * قم بعمل مستودع فارغ على github (من الموقع), وهو سيعطيك البيانات التالية (لاحظ الرابط باللون الأحمر):
+
+    ![image|521x500](upload://nQQ6PdoiOFkiystnMsvaar9QnkW.png)
+
+  * قم بربط المستودع الذي قمت بالتعديل عليه في جهازك بالرابط الذي تحصل عليه في github بهذا الأمر:
+
+        git remote set-url origin URL
+
+     لا تنسى تعديل URL إلى الرابط الذي حصلت عليه بالأعلى (باللون الأحمر في الصورة), مثلاً عندي سأقوم بالآتي (صورة متحركة):
+
+     ![git-mission|675x500](upload://tpPkxrtLKWgmLONnXiuYUvMY4Ti.gif)  
+
+   * قم برفع المشروع باستعمال push.
+
+* ### ملحق:
+
+ * #### التلاعب بالتاريخ باستعمال amend:
+
+      https://www.atlassian.com/git/tutorials/rewriting-history#git-commit--amend
+
+ * #### التلاعب بالتاريخ بالأمر rebase:
+      https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase 
+
+  * #### شرح git squash:
+
+     https://stackoverflow.com/questions/5189560/squash-my-last-x-commits-together-using-git
+
+* ### أين توضع الحلول :
+
+  بإمكانك أن تنشر الحل في الموضوع المخصص له:
+
+  https://macdiscussions.udacity.com/t/git-rewriting-history/141863
+
+  **في حال لديك أي استفسارات** , تفضل بالسؤال في هذا الموضوع.
+
+  أتمنى لكم الفائدة والتوفيق :blush:

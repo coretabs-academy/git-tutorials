@@ -1,0 +1,296 @@
+**السلام عليكم أصدقائي,**
+
+* ### فهرس المواضيع السابقة:
+
+  https://macdiscussions.udacity.com/t/git-fullstack-frontend/122936
+
+* ### مالذي قمنا به في آخر مهمة ؟
+
+  قمنا بعمل ignore للملف password.txt, وتعديل لون الهيدر في موقع facebook.
+
+  ولكن التعديل الأخير لم يعجبني, وأريد التراجع عنه, كيف أقوم بذلك ؟
+
+  يجب علينا أولاً تذكر الثلاث المناطق الرئيسية داخل git.
+ 
+* #### ماهي الثلاث المناطق الرئيسية Three main areas in Git ؟
+
+  لاحظ أننا كنا نقوم بعمل بالترتيب:
+
+      Staging >> Committing >> Pushing
+
+  * #### ولكن أين تحصل هذه العمليات ؟
+
+    تحصل هذه العمليات في الثلاث الأماكن الرئيسية في git وهي:
+
+    ![Untitled|590x248](upload://jUvvENLHELvCYNCF9mhx9EMTf7z.png)
+
+    * #### ماهي Working Area ؟
+
+       ببساطة هي المجلد الذي تعمل عليه بشكل مستمر, وتقوم فيه بإضافة وحذف وتعديل الملفات.
+
+    * #### ماهي Staging Area ؟
+
+      هي المكان الذي يراقب فيه git أسماء الملفات, وتواقيع الملفات... بإمكانك أن تقول, نسخة من محتوى Working Area.
+
+      يسمى أيضاً Staging Area بـ Index.
+
+    * #### ماهو المستودع Repository ؟
+
+       هو ببساطة مجلد `.git` الموجود داخل المشروع خاصتك:
+
+      ![image|131x117](upload://2DJ3JFCEUPgVAXXTmIeLAr7GTK1.png)
+
+      وداخله يتم تخزين قائمة الـ commits, كما بالصورة التي في الأعلى !
+
+* ### حسنا لنقم بكتابة الأمر `git status` ونرى النتيجة:
+
+  ![image|576x80](upload://gienEDDfONAYhnl6ur23FSKSSpB.png)
+
+  يقول أنه لا يوجد أي تعديلات لعمل commit لها... أي أنه يعرف إذا قمنا بتعديلات أو لا يوجد أي تعديلات في لحظات !
+
+   يبدو الأمر سحري :smile: 
+
+  * #### ولكن السؤال هو, كيف يعرف git هذا الأمر ؟
+
+    لا يوجد أي شيء سحري... فقط git يقوم بالمقارنة بين محتوى Working Area و Staging Area.
+
+    إذا كانوا متساويين, فهو سيعرف أنه لا يوجد أي تعديلات, هذا هو الأمر بكل بساطة !
+
+* ### كيف نقوم بنقل الملفات بين الثلاث الأماكن الرئيسية ؟
+
+  * #### بداية من Working إلى Staging:
+
+    الأمر `git add` هو المسؤول عن هذا !
+
+    كما قلنا أن add معناه أن يقوم بنقل الملف إلى خشبة المسرح Staging Area :wink:
+
+    ![image|590x360](upload://eoMEfxlAeQndypQDAXpccorMltG.jpg) 
+
+  * #### كيفية نقل الملفات إلى الـ repository ؟
+
+    أعتقد أنك تعرف الأمر مسبقاً... نعم إنه `git commit`  !
+
+    ![image|590x398](upload://rFX7nwxzb7Z4AMghnS2ze62yU5R.jpg) 
+
+* ### قمنا بتغيير لون الخلفية مؤخراً... لنرى التاريخ على git:
+
+  سنكتب الامر:
+
+      git log --oneline --graph --decorate
+
+  يظهر لنا:
+
+  ![image|590x132](upload://q7Muxrfd6nYq8qW7AG1ZNHMthP8.png)
+
+  أعتقد أنك فهمت ما يقوم به... نحن نظهر التاريخ.
+
+  * #### ولكن ما معنى الـ oneline و graph و decorate ؟
+
+    يسمى هذا النوع من الـ parameters بالـ switches, أي أنها مثل:
+
+    ![image](https://discourse-cdn-sjc3.com/udacitymillioncoders/uploads/default/original/3X/7/1/718b84f2885a552f338e4c2cd2766f7770150cae.jpg)
+
+    أي أنك حينما تكتبه معناه تفعيل الخيار, يعني جعله On بدلاً مما كان Off.
+
+    هذا النوع من الـ parameter لا يحتاج أي argument بعده, لأنه وظيفته On و Off فقط.
+
+    * #### مالذي يقوم به الـ oneline ؟
+
+      معناه أننا نخبر git بعرض التاريخ log, كل commit في سطر واحد... من اسمه one line.
+
+    * #### ماذا عن graph ؟
+
+      هي تقوم بعرض الـ log على شكل مخطط graph... في حال كان معقد أكثر ستلاحظ النتيجة بشكل أجمل.
+
+    * #### بالنسبة لـ decorate:
+
+      فهي فقط تقوم بعمل ألوان على النقاط الأمور المهمة.
+
+    * #### أعتقد أنك لاحظت HEAD في الـ log... ماهو وما فائدته ؟
+
+      ![image|466x19](upload://72uTrEKUVdDCQQy9cMLdsMl1gxH.png)
+
+      هو فقط مؤشر (سهم), ولكن إلى أين يؤشر ؟
+
+      هو ببساطة يؤشر على الفرع branch الحالي... في حالتنا master (الـ branch الإفتراضي), بهذا الشكل:
+
+      ![image|446x500](upload://rPMeVUklkaI9GAzbyiaoDpZgYdc.jpg)
+
+    * #### ماذا عن origin/master... ماهو ؟
+
+       ![image|466x39](upload://VWvrwp8q55yO9BjD7Le4DFE4YE.png)
+
+       هذا هو الفرع على المستودع البعيد remote repository... يعني على GitHub.
+
+       معنى هذا أنني على github, لم أقم بعمل push لآخر commit وهي Change header color, أي أنها لن تظهر هناك:
+
+      ![github-commits-log|400x500](upload://saGTe8AuF8L1pKrcMP0NOrEnl2i.png)
+
+   * #### معنى هذا أنني بالأعلى لم أكتب النتيجة الفعلية من `git status`, صحيح ؟
+
+     نعم, هذه هي النتيجة كاملة:
+
+     ![image|581x109](upload://lN9SCa1TnpsVNrSekxxGJ6qJWdR.png)
+
+     لاحظ أن git قام بالمقارنة بين origin/master و master... واكتشف أنه يوجد commit آخر وهو تغيير الألوان Change Color Header, وهو يخبرنا بعمل push لإرسال التعديلات. 
+
+  * #### ولكن إذا لم أرد أن أرسل هذه التعديلات, أي أنها لم تعجبني أصلاً... كيف أقوم بالعودة كما كان المشروع قبل الـ commit الأخيرة ؟
+
+    الإجابة بسيطة, وهي لب هذا الدرس... **`git reset`**.
+
+  * #### مالذي يقوم به الأمر `git reset` ؟
+
+    فقط تختار فيه الـ commit الذي تريد العودة إليها (إما بالـ sha1 خاصتها), أو باستعمال HEAD.
+
+    وهو سيقوم بالعودة سابقاً باستعمال الـ Repository وادخالها إلى Working & Staging Area... الصورة توضح الأمر:
+
+    ![image|590x301](upload://rdg7rPeoODpitOiEg9EXcKn2YUL.jpg)
+
+  * #### مالفائدة ؟
+
+    كما نعرف Working Area هي مجلد المشروع الذي تعمل عليه... أي أنه سيرجع التعديلات عليه :wink: 
+
+   * #### قلنا أنه بإمكاننا اختيار الـ commit باستعمال HEAD, ولكن كيف ؟
+
+     كما نعرف أن HEAD يشير إلى الـ branch الذي نعمل عليه, والـ branch بدوره يشير إلى الـ commit.
+
+     ![image|499x500](upload://dnc1Ex5rYuUJh3kX1fyVcIyCLWg.jpg)
+
+  * #### كيف نظهر الـ commit التي يشير إليها HEAD ؟
+
+     نكتب الأمر:
+
+         git show HEAD
+
+  * #### طيب, كيف نرجع للـ commit التي قبلها ؟
+
+    الأمر بسيط جداً... نستعمل `HEAD^`
+
+    بهذا الشكل:
+
+        git show HEAD^
+
+  * #### كيف نرجع للـ commit التي قبلها مرتين ؟
+
+    أيضاً سهل جداً:
+
+        git show HEAD^^
+
+    أعتقد أنك فهمت الأمر... كل مرة نريد العودة نضيف ^
+
+  * #### لا تعجبني الطريقة, إذا أريد العودة عشر commits, هل سأكتب ^ عشر مرات :roll_eyes: ؟
+
+    لا أبداً, لدينا طريقة جميلة جداً وهي استعمال ~ بهذا الشكل:
+
+        git show HEAD~10
+
+    معناه أعرض الـ commit التي قبلها بعشر مرات.
+
+  * #### قمت بتجربة `HEAD^` وهو لا يعمل... مالمشكلة ؟
+
+    ![git-show-head-fail|650x123](upload://inHdzjM2PXvJ7OtxolUUnNCbScB.png)
+
+    أعتقد أنك تستخدم cmd, وليس git bash... في git bash, سيعمل بدون مشاكل.
+
+    لكن في cmd يجب أن تستعمل `HEAD^^` بدلاً من `HEAD^`.
+
+    وأيضاً `HEAD^^^^` بدلاً من `HEAD^^`... يعني لو تريد الرجوع commit واحدة تعمل اثنان ^ لكل واحدة, تسمى هذه الطريقة escaping character لأن ^ حرف غير مقبول ويجب حل المشكلة بإضافته مرة أخرى.
+
+        HEAD^ in git bash = HEAD^^ in cmd
+
+* ### يبدو أنني تحدثت كثيراً :smile:... كيف سنقوم بالعودة للـ commit السابقة ؟
+
+    سنستعمل الأمر:
+
+      git reset --hard HEAD^
+
+    بهذا الشكل سيعود إلى commit قبل الأخيرة !
+
+    وسنحذف اللون القبيح الذي استعملناه مؤخراً على الـ header... هذا ما سيحصل, سننزل إلى الـ commit السابقة:
+
+    ![image|520x500](upload://AsB0q0RMkT43HaRmBvfkTpAMXih.jpg)
+
+    * #### ولكن ماهو `--hard` ؟
+
+      هذا معناه أن ينقل الـ commit من الـ Repository إلى كلاً من Working & Staging Area.
+
+      كما في الصورة:
+
+      ![image|590x301](upload://rdg7rPeoODpitOiEg9EXcKn2YUL.jpg)
+
+      لأننا نريد أن يقوم بهذا فعلاً... يزيل التعديل كأنه لم يكن موجود.
+
+   * #### ماذا لو لم نكتب الـ switch بالأعلى `--hard` ؟
+
+     سيقوم git فقط بنقل التعديلات من Repository إلى Staging Area فقط !
+
+     بهذا الشكل
+
+     ![image|590x414](upload://lAVVik0mnvxi7KOkD5951ID1HT2.jpg)
+
+  * #### ماهو الخيار الإفتراضي بدون `--hard` ؟
+
+    الخيار الإفتراضي هو `git reset --mixed`, يعني لو كتبت `git reset` بدون أي switch... سيعطيك نفس النتيجة :smile: 
+
+* ### همم... عرفنا كيف نرجع للـ commit السابقة, ولكن أين ذهبت الـ commit ؟
+
+  هي ما زالت موجودة, ولكن بعد فترة سيقوم garbage collector (جامع القمامة) بحذفها مستقبلاً... ولكن ما زال بإمكاننا العودة عليها فقط باستعمال sha1, إذا كنت تعرفه !
+
+  ![image|515x500](upload://i7X8XC4yN3Nw19gnhfmp1lPCsk5.jpg)
+
+  كما ترى الهاش بالأعلى (ربما عندك hash مختلف)... للعودة إلى اللون القبيح مجدداً:
+
+      git reset --hard 6a3caef
+
+  وهو سيقوم بتحريك المؤشر الخاص بالـ master إلى الـ commit التي بالأعلى مجدداً, 
+
+  و HEAD يذهب أين ما ذهب master , مثل الشنطة :joy:
+
+* ### تحقق من فهمك
+
+  * #### الأمر `git add` يقوم بنقل الـ Staging Area إلى Repository
+[poll name=test1 type=regular]
+* صحيح
+* خاطئ
+[/poll]
+
+  * #### الأمر `git reset --mixed` يقوم بنقل الـ repository إلى working & staging area
+[poll name=test2 type=regular]
+* صحيح
+* خاطئ
+[/poll]
+
+  * #### الأمر `git reset --hard` يقوم بنقل الـ repository إلى working & staging area
+[poll name=test3 type=regular]
+* صحيح
+* خاطئ
+[/poll]
+
+
+* ### ماهي المهمة المطلوبة ؟
+
+  قم بحذف التعديل الأخير من الـ repository خاصتك.
+
+  عندما تقوم بعمل push إلى github سيطلب منك أن تستعمل force... لأنك قمت بحذف commit, ستقوم بها بهذا الشكل:
+
+      git push --force origin master
+
+* ### ملحق:
+
+  * #### شرح مفصل للـ git reset:
+
+      https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified
+
+  * #### توثيق الأمر reset documentation:
+
+     https://git-scm.com/docs/git-reset
+
+* ### أين توضع الحلول :
+
+  بإمكانك أن تنشر الحل في الموضوع المخصص له:
+  https://macdiscussions.udacity.com/t/git-undoing-changes/140090
+
+
+  **في حال لديك أي استفسارات** , تفضل بالسؤال في هذا الموضوع.
+
+  أتمنى لكم الفائدة والتوفيق :blush:
